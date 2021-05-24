@@ -40,6 +40,6 @@ function anagram(arr) {
 }
 
 let ana1 = ['kita', 'atik', 'tika', 'aku', 'kia', 'makan', 'kua']
-// mau memastikan test case soal kia muncul lebih dulu dari makan
-// tapi expected resultnya harus makan dulu dari kia?
+// mau memastikan test case soal kata 'kia' muncul lebih dulu dari 'makan'
+// tapi expected resultnya harus 'makan' dulu dari 'kia'?
 console.log(anagram(ana1))
