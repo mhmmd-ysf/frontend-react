@@ -1,6 +1,12 @@
 // Deklarasi redux & reducer
 const redux = require('redux')
 
+/*
+1. reducer => function(state, aciton)
+2. action => object
+3. store
+*/
+
 const reducer = (state = {}, action) => {
   state = { hello: '' }
   if(action.type == 'greetings') {

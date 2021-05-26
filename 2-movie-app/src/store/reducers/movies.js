@@ -3,6 +3,10 @@ const initialState = {
 }
 
 const movieReducer = (state = initialState, action) => {
+  // console.log({ state, action })
+  if(action.type === 'fetch-movies') {
+    return { ...state, movies: action.payload }
+  }
   return state
 }
 
