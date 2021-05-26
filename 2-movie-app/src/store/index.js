@@ -3,11 +3,9 @@ import movieReducer from './reducers/movies'
 import thunk from 'redux-thunk'
 
 const logger = store => next => action => {
-  console.log('middleware sebelum next')
-
+  // console.log('middleware sebelum next')
   next(action)
-
-  console.log('hasil dari action:', store.getState())
+  // console.log('hasil dari action:', store.getState())
 }
 
 const store = createStore(combineReducers({

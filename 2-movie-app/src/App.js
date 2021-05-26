@@ -2,36 +2,53 @@ import './App.css';
 import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import fetchMovie from './store/actions/movies'
+import fetchMore from './store/actions/more'
 import Home from './views/home'
 import Details from './views/details'
 import axios from './API/axios'
 import Navbar from './components/navbar'
 
 function App() {
-  const movies = useSelector(state => {
+  const apiPage = useSelector(state => {
     // dapet data dari state, return apa yang mau diambil
-    return state.reduceMovie.movies
+    return state.reduceMovie.apiPage
   })
   const dispatch = useDispatch()
   const [page, setPage] = useState('home')
   const [movie, setMovie] = useState({})
+  const [searchInput, setSearchInput] = useState('')
 
   useEffect(() => {
     dispatch(fetchMovie())
   }, [])
-  // console.log({ movies, dari: 'app.js' })
 
   async function search(input) {
+    setSearchInput(input.query)
+    if(input.page) {
+      dispatch({ type: 'add-page' })
+    }
+    if(input.clean) {
+      dispatch({ type: 'clean' })
+    }
+    let url = `?apikey=faf7e5bb&page=${apiPage}&s=${input.query}`
     try {
       let { data } = await axios({
         method: 'get',
-        url: '?apikey=faf7e5bb&s=' + input
+        url
       })
-      // console.log({ data })
-      dispatch({
-        type: 'fetch-movies',
-        payload: data.Search
-      })
+      // console.log(apiPage, url)
+      // console.log(data.Search)
+      if(data.Response === 'False') {
+        dispatch({
+          type: 'fetch-movies',
+          payload: []
+        })
+      } else {
+        dispatch({
+          type: 'fetch-movies',
+          payload: data.Search
+        })
+      }
       setPage('home')
     } catch (error) {
       console.log({ error })
@@ -39,34 +56,25 @@ function App() {
   }
 
   async function seeDetails(id) {
-    // setPage('details')
     try {
       let { data } = await axios({
         method: 'get',
         url: '?apikey=faf7e5bb&i=' + id
       })
-      // console.log({ data, dari: 'details' })
       setMovie(data)
       setPage('details')
     } catch (error) {
       console.log({ error })
     }
-
   }
 
   return (
-    <div className="App">
-      {/* <div className="bg-blue-100">
-        <form onSubmit={search}>
-          <input type="text" value={inputMovie} onChange={e => setInputMovie(e.target.value)}></input>
-          <button type="submit">Search</button>
-        </form>
-      </div> */}
-      <Navbar search={search}></Navbar>
+    <div className="min-h-screen bg-gray-500 App">
+      <Navbar search={search} changePage={ page => setPage(page) }></Navbar>
       <div>
         {
           page === 'home' ?
-          <Home seeDetails={ seeDetails }></Home>
+          <Home seeDetails={ seeDetails } search={ search } searchInput={searchInput}></Home>
           : page === 'details' ?
           <Details movie={ movie }></Details>
           :

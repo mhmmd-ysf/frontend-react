@@ -1,6 +1,6 @@
 import axios from '../../API/axios'
 
-const fetchMovie = (payload) => {
+const fetchMore = (payload) => {
   return async (dispatch) => {
     try {
       const { data } = await axios({
@@ -24,4 +24,4 @@ const fetchMovie = (payload) => {
   }
 }
 
-export default fetchMovie
+export default fetchMore

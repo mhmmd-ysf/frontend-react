@@ -1,11 +1,25 @@
 const initialState = {
-  movies: [ {contoh: 1} ]
+  movies: [],
+  apiPage: 1
 }
 
 const movieReducer = (state = initialState, action) => {
-  // console.log({ state, action })
   if(action.type === 'fetch-movies') {
-    return { ...state, movies: action.payload }
+    return {
+      ...state,
+      movies: state.movies.concat(action.payload),
+    }
+  } else if(action.type === 'add-page') {
+    return {
+      ...state,
+      apiPage: state.apiPage + 1
+    }
+  } else if(action.type === 'clean') {
+    return {
+      ...state,
+      movies: [],
+      apiPage: 1,
+    }
   }
   return state
 }
