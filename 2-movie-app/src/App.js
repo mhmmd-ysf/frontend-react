@@ -30,7 +30,7 @@ function App() {
     if(input.clean) {
       dispatch({ type: 'clean' })
     }
-    let url = `?apikey=faf7e5bb&page=${apiPage}&s=${input.query}`
+    let url = `?apikey=81d0a613&page=${apiPage}&s=${input.query}`
     try {
       let { data } = await axios({
         method: 'get',
@@ -51,7 +51,11 @@ function App() {
       }
       setPage('home')
     } catch (error) {
-      console.log({ error })
+      if(error && error.response && error.response.data && error.response.data.Error) {
+        alert(error.response.data.Error)
+      } else {
+        console.log({ error })
+      }
     }
   }
 
@@ -59,7 +63,7 @@ function App() {
     try {
       let { data } = await axios({
         method: 'get',
-        url: '?apikey=faf7e5bb&i=' + id
+        url: '?apikey=81d0a613&i=' + id
       })
       setMovie(data)
       setPage('details')
